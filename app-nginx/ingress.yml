@@ -1,0 +1,43 @@
+apiVersion: traefik.containo.us/v1alpha1
+kind: Middleware
+metadata:
+  name: middleware
+  namespace: app
+spec:
+  redirectScheme:
+    scheme: https
+    permanent: true
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingress-https
+  namespace: app
+spec:
+  entryPoints:
+    - websecure
+  routes:
+  - match: Host(`nginx.example.ru`)
+    kind: Rule
+    services:
+    - name: myapp
+      port: 80
+  tls:
+    secretName: ingress-cert
+---
+apiVersion: traefik.containo.us/v1alpha1
+kind: IngressRoute
+metadata:
+  name: ingress-http
+  namespace: app
+spec:
+  entryPoints:
+    - web
+  routes:
+  - match: Host(`nginx.example.ru`)
+    kind: Rule
+    middlewares:
+    - name: middleware
+    services:
+    - name: myapp
+      port: 80

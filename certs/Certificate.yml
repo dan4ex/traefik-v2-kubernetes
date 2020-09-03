@@ -1,0 +1,14 @@
+---
+apiVersion: cert-manager.io/v1alpha2
+kind: Certificate
+metadata:
+  name: ingress-cert
+  namespace: app
+spec:
+  commonName: nginx.example.ru
+  secretName: ingress-cert
+  dnsNames:
+    - nginx.example.ru
+  issuerRef:
+    name: letsencrypt-prod
+    kind: ClusterIssuer
