@@ -14,3 +14,7 @@ deployment:
   podAnnotations: 
     prometheus.io/port: '8082'
     prometheus.io/scrape: 'true'
+service:
+  spec:
+    loadBalancerIP: "Your static ip in cloud provider"
+    
